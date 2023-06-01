@@ -13,7 +13,18 @@ The expansion model is an untrained wide convolutionl neural nework with a pre-d
 
 # Using the model
 
+- Clone this repository to a local directrory. 
+
 ```
-code? 
+git clone https://github.com/akazemian/Engineered_Models.git
+```
+- Navigate to the local directory, import the model and initiate it.
+
+```
+from models.expansion_model import ExpansionModel
+
+model = ExpansionModel().Build()
+print(model)
 ```
 
+- Alternatively, open the call_model notebook and initialze the model uing the provided code blocks.
