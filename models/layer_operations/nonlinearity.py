@@ -3,7 +3,7 @@ from torch import nn
 import numpy as np
 
 
-class nonlinearity(nn.Module):
+class NonLinearity(nn.Module):
     
     def __init__(self,operation):
         super().__init__()

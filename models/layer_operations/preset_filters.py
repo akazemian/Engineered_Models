@@ -1,37 +1,24 @@
 import torch
 from torch import nn
-from torch.nn import functional as F
 import numpy as np
-import math
-from scipy.ndimage import gaussian_filter
-import random
-
-
-
-
-
-def make_random_filters(out_channels,in_channels,kernel_size):
-    """
-    Creates random filters from a uniform distribution  
-    """
-    torch.manual_seed(27)
-    w = torch.rand(out_channels,in_channels,kernel_size,kernel_size)
-    w -= w.mean(dim = [2,3],keepdim=True) # mean centering
-        
-    return w
-
-
 
 
     
-class CurvatureModel(nn.Module):
-  
-    
+class CurvatureFilters(nn.Module):
+
+
     def __init__(self,
                  n_ories=16,
                  in_channels=1,
                  curves=np.logspace(-2, -0.1, 5),
-                 gau_sizes=(5,), filt_size=9, fre=[1.2], gamma=1, sigx=1, sigy=1):
+                 gau_sizes=(5,), 
+                 filt_size=9, 
+                 fre=[1.2], 
+                 gamma=1, 
+                 sigx=1, 
+                 sigy=1):
+        
+        
         super().__init__()
 
         self.n_ories = n_ories
@@ -93,46 +80,38 @@ def banana_filter(s, fre, theta, cur, gamma, sigx, sigy, sz):
 
 
 
-def make_onebyone_filters(out_channels,in_channels):
-    """
-    Creates 1x1 convolution filters used for random projection
-    """
-    torch.manual_seed(27)
-    w = torch.randn(out_channels,in_channels, 1, 1) 
-    w = w/np.sqrt(out_channels)
-    return w
 
-
-
-
-
-def filters(filter_type,out_channels=None,in_channels=None,curv_params = None,kernel_size=None):
+def filters(filter_type:str,
+            in_channels:int = None,
+            curv_params:dict = None,
+            kernel_size:int = None):
 
     """
-    Returns the filters based on filter type
+    Returns the filters given the filter type
     
     Arguments
     ----------  
     
-    filter_type:
-    out_channels:
+    filter_type: 
+        The type of filters to use. There is currently only one type (curvature) but others, such as gabor filters can be added.
+    
+
     in_channels:
+        number of input channels
+
     curv_params:
+        parameters for the curvature model
+
     kernel_size:
+        size of the kernels
  
     """
         
-    assert filter_type in ['random','1x1','curvature'], "filter should be one of 'random', '1x1' or 'curvature'"
-    
-    if filter_type == 'random':
-        return make_random_filters(out_channels,in_channels,kernel_size)
+    assert filter_type in ['curvature'], "the only available filter type is curvature"
 
-    elif filter_type == '1x1':
-        return make_onebyone_filters(out_channels,in_channels)
+    if filter_type == 'curvature':
 
-    elif filter_type == 'curvature':
-
-        curve = CurvatureModel(
+        curve = CurvatureFilters(
             in_channels=in_channels,
             n_ories=curv_params['n_ories'],
             gau_sizes=curv_params['gau_sizes'],
