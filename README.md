@@ -10,3 +10,10 @@ The expansion model is an untrained wide convolutionl neural nework with a pre-d
 
 ![alt text](https://github.com/akazemian/Engineered_Models/blob/master/expansion.png?style=centerme)
 
+
+# Using the model
+
+```
+code? 
+```
+
