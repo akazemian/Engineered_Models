@@ -28,4 +28,4 @@ X = torch.rand(1,3,96,96) # N, C, W, H
 model(X)
 ```
 
-- Alternatively, open the call_model notebook and initialize the model uing the provided code blocks.
+- Alternatively, open the call_model.ipynb notebook and initialize the model uing the provided code blocks.
